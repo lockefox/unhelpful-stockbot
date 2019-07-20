@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  slackbot:
+    container_name: unhelpful-quote-slackbot
+    image: unhelpful-will-bot:latest
+    build: .
+    environment:
+      WILL_REDIS_URL: 'redis://redis:6379'
+      LOGLEVEL: INFO
+    depends_on:
+      - redis
+    command: python3 /opt/will/run_will.py
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - 6379:6379

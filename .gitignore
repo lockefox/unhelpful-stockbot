@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Mac Stuff
+.DS_Store
+
 # C extensions
 *.so
 
@@ -102,3 +105,9 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+shelf.db
+
+# Secrets
+default.env
+dev.env
