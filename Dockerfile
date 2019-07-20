@@ -1,13 +1,10 @@
-FROM heywill/will-base:3.7-alpine
+FROM revolutionsystems/python:3.7.1
 
-RUN apk upgrade --update
-RUN apk add openssl-dev libffi-dev
-
-COPY . /opt/will
+COPY . /opt/unhelpful-bot
 
 # TODO USER
 
-WORKDIR /opt/will
-RUN pip3 install -r requirements.txt
+WORKDIR /opt/unhelpful-bot
+RUN pip3 install .
 
 RUN pip3 freeze

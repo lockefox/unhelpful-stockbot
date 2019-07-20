@@ -68,7 +68,7 @@ run: build default.env
 	@docker run --rm \
 		--volume `pwd`:/opt/will \
 		${WILL_IMAGE_NAME} \
-		python3 /opt/will/run_will.py
+		launch-unhelpful
 
 .PHONY: debug
 debug: build default.env
