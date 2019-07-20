@@ -24,7 +24,9 @@ setup(
     classifiers=['Programming Language :: Python :: 3.6', 'Programming Language :: Python :: 3.7'],
     keywords='slack bot stock fintech chatbot',
     packages=find_packages(),
-    package_data={'', ['LICENSE', 'README.md', 'VERSION']},
-    install_requires=[],
-    entry_points={'console_scripts': ['launch-unhelpful=unhelpful.launch_unhelpful:run']},
+    package_data={'': ['LICENSE', 'README.md', 'VERSION']},
+    install_requires=[
+        'slackbot==0.5.3',
+    ],
+    entry_points={'console_scripts': ['launch-unhelpful=unhelpful.bot:run']},
 )
