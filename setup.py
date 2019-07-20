@@ -21,19 +21,10 @@ setup(
     version=__version__,
     url='TODO',
     license='MIT',
-    classifiers=[
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-    ],
+    classifiers=['Programming Language :: Python :: 3.6', 'Programming Language :: Python :: 3.7'],
     keywords='slack bot stock fintech chatbot',
     packages=find_packages(),
-    package_data={
-        '', ['LICENSE', 'README.md', 'VERSION'],
-    },
-    install_requires=[
-
-    ],
-    entry_points={
-        'console_scripts': ['launch-unhelpful=unhelpful.launch_unhelpful:run'],
-    }
+    package_data={'', ['LICENSE', 'README.md', 'VERSION']},
+    install_requires=[],
+    entry_points={'console_scripts': ['launch-unhelpful=unhelpful.launch_unhelpful:run']},
 )
