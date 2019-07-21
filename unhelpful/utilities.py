@@ -22,3 +22,14 @@ def get_config(section, key, default=''):
         Configparser.exception: unable to locate value
 
     """
+    config = configparser.ConfigParser()
+    config.read(CONFIG_FILEPATH)
+
+    try:
+        val = config.get(section, key)
+    except Exception:
+        if default:
+            return default
+        raise
+
+    return val
