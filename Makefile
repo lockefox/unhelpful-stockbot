@@ -36,7 +36,7 @@ install: $(VENV_FILE) setup.py
 
 .PHONY: test
 test: $(VENV_FILE)/bin/tox
-	@tox $(TOX_ENVLIST)
+	@tox ${TOX_ARGS}
 
 .PHONY: black
 black: $(VENV_FILE)/bin/black

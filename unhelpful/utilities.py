@@ -7,7 +7,7 @@ import pkgutil
 CONFIG_FILEPATH = os.environ.get('USELESS_CONFIG_FILEPATH', pkgutil.get_data('useless', 'app.cfg'))
 
 
-def get_config(section, key, default=''):
+def get_config(section, key, default=None):
     """fetch valuse from config file
 
     Args:
@@ -19,7 +19,7 @@ def get_config(section, key, default=''):
         str: configparser output
 
     Raises:
-        Configparser.exception: unable to locate value
+        Configparser.error: unable to locate value
 
     """
     config = configparser.ConfigParser()
@@ -28,7 +28,7 @@ def get_config(section, key, default=''):
     try:
         val = config.get(section, key)
     except Exception:
-        if default:
+        if default is not None:
             return default
         raise
 
