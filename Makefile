@@ -34,10 +34,6 @@ install: $(VENV_FILE) setup.py
 	@$(WHICH_PIP) install -e .
 	@touch $@
 
-.PHONY: test
-test: $(VENV_FILE)/bin/tox
-	@tox ${TOX_ARGS}
-
 .PHONY: black
 black: $(VENV_FILE)/bin/black
 	@black -S $(BLACK_ARGS)
@@ -47,6 +43,16 @@ default.env: dev.env
 
 dev.env: 
 	@cp template.env dev.env
+
+## vv heckin makefile is weird
+include default.env
+export ROBINHOOD_CLIENT_ID ROBINHOOD_PASSWORD ROBINHOOD_USERNAME
+## ^^ heckin makefile
+
+.PHONY: test default.env
+test: $(VENV_FILE)/bin/tox
+	@printenv
+	@tox ${TOX_ARGS}
 
 build: Dockerfile requirements.txt VERSION
 	@docker build \
