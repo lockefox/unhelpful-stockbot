@@ -4,7 +4,7 @@ import configparser
 import os
 import pkgutil
 
-CONFIG_FILEPATH = os.environ.get('USELESS_CONFIG_FILEPATH', pkgutil.get_data('useless', 'app.cfg'))
+CONFIG_FILE = pkgutil.get_data('unhelpful', 'app.cfg').decode('utf-8')
 
 
 def get_config(section, key, default=None):
@@ -23,7 +23,7 @@ def get_config(section, key, default=None):
 
     """
     config = configparser.ConfigParser()
-    config.read(CONFIG_FILEPATH)
+    config.read_string(CONFIG_FILE)
 
     try:
         val = config.get(section, key)

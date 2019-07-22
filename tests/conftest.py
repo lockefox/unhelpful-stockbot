@@ -20,7 +20,8 @@ def config(tmpdir, here):
     cfg_path = os.path.join(tmpdir, 'app.cfg')
     shutil.copy(os.path.join(here, 'dummy.cfg'), cfg_path)
 
-    return cfg_path
+    with open(cfg_path, 'r') as cfg_fh:
+        return cfg_fh.read()
 
 
 @pytest.fixture
@@ -43,3 +44,17 @@ def root():
 
     """
     return ROOT
+
+
+def pytest_runtest_makereport(item, call):
+    if "incremental" in item.keywords:
+        if call.excinfo is not None:
+            parent = item.parent
+            parent._previousfailed = item
+
+
+def pytest_runtest_setup(item):
+    if "incremental" in item.keywords:
+        previousfailed = getattr(item.parent, "_previousfailed", None)
+        if previousfailed is not None:
+            pytest.xfail("previous test failed (%s)" % previousfailed.name)

@@ -1,1 +1,2 @@
 include README.md VERSION LICENSE
+include unhelpful/app.cfg
