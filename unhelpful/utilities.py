@@ -19,7 +19,7 @@ def get_config(section, key, default=None):
         str: configparser output
 
     Raises:
-        Configparser.error: unable to locate value
+        configparser.Error: unable to locate value
 
     """
     config = configparser.ConfigParser()
@@ -27,7 +27,7 @@ def get_config(section, key, default=None):
 
     try:
         val = config.get(section, key)
-    except Exception:
+    except configparser.Error:
         if default is not None:
             return default
         raise
