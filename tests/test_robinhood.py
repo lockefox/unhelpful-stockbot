@@ -8,15 +8,9 @@ import requests
 from unhelpful import robinhood as robinhood
 
 
-def test_hello_world(rh_secrets):
-    """DELETE ME"""
-    print(os.environ)
-    print(rh_secrets)
-    assert False
-
-
 def test_login(rh_secrets):
     """validate login/logout contextmanager"""
+    ## Use API as expected ##
     with robinhood.RobinhoodConnection(
         username=rh_secrets.robinhood_username,
         password=rh_secrets.robinhood_password,
@@ -24,6 +18,7 @@ def test_login(rh_secrets):
     ) as client:
         quote = client.get('quotes/', params={'symbols': 'MU'})
 
+    ## Validate that client is logged out ##
     with pytest.raises(requests.RequestException):
         req = requests.get(
             'https://api.robinhood.com/quotes/',

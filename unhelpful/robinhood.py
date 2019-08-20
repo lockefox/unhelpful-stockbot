@@ -14,8 +14,8 @@ class RobinhoodConnection:
     """contextmanater for handling authenticated feeds from Robinhood
 
     Args:
-        Username (str): Robinhood Username
-        Password (str): Robinhood Password
+        username (str): Robinhood Username
+        password (str): Robinhood Password
         client_id (str): Robinhood client_id for oAuth
 
     """
