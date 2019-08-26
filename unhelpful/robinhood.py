@@ -6,8 +6,7 @@ import logging
 import requests
 
 from . import exceptions
-
-ROOT_URL = 'https://api.robinhood.com'
+from .utilities import get_config
 
 
 class RobinhoodConnection:
@@ -28,8 +27,6 @@ class RobinhoodConnection:
         self._username = username
         self._password = password
 
-        self.login_endpoint = 'https://api.robinhood.com/oauth2/token/'
-        self.logout_endpoint = 'https://api.robinhood.com/oauth2/revoke_token/'
         self.auth_token = ''
         self.refresh_token = ''
 
@@ -53,13 +50,15 @@ class RobinhoodConnection:
             raise exceptions.RobinhoodNoLogin
 
         headers = {**headers, 'Authorization': f'Bearer {self.auth_token}'}
-        req = requests.get(f'{ROOT_URL}/{endpoint}', params=params, headers=headers)
+        req = requests.get(
+            f'{get_config("ROBINHOOD", "root")}/{endpoint}', params=params, headers=headers
+        )
         req.raise_for_status()
         return req.json()
 
     def __enter__(self):
         req = requests.post(
-            self.login_endpoint,
+            f'{get_config("ROBINHOOD", "root")}/{get_config("ROBINHOOD", "oauth_endpoint")}',
             params=dict(
                 grant_type='password',
                 client_id=self._client_id,
@@ -75,6 +74,28 @@ class RobinhoodConnection:
 
     def __exit__(self, *exc):
         req = requests.post(
-            self.logout_endpoint, data=dict(client_id=self._client_id, token=self.refresh_token)
+            f'{get_config("ROBINHOOD", "root")}/{get_config("ROBINHOOD", "logout_endpoint")}',
+            data=dict(client_id=self._client_id, token=self.refresh_token),
         )
         req.raise_for_status()
+
+
+def get_price(ticker, client, endpoint='quotes/'):
+    """generate a stock quote from Robinhood
+
+    Args:
+        ticker (str): stock ticker
+        client (:obj:`RobinhoodConnection`): connection context
+        endpoint (str): path to
+
+    Returns:
+        dict: todo
+
+    Raises:
+        requests.RequestException: Unable to connect to robinhood
+
+    """
+    quote = client.get(endpoint, params={'symbols': ticker})
+    if quote['results'][0]['last_extended_hours_trade_price']:
+        return quote['results'][0]['last_extended_hours_trade_price']
+    return quote['results'][0]['last_trade_price']

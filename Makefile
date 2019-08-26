@@ -51,7 +51,6 @@ export ROBINHOOD_CLIENT_ID ROBINHOOD_PASSWORD ROBINHOOD_USERNAME
 
 .PHONY: test default.env
 test: $(VENV_FILE)/bin/tox
-	@printenv
 	@tox ${TOX_ARGS}
 
 build: Dockerfile requirements.txt VERSION
