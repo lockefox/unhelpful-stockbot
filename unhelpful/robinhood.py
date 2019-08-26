@@ -80,7 +80,7 @@ class RobinhoodConnection:
         req.raise_for_status()
 
 
-def get_price(ticker, client, endpoint='quotes/'):
+def get_price(ticker, client, endpoint=get_config("ROBINHOOD", "quotes_endpoint")):
     """generate a stock quote from Robinhood
 
     Args:
@@ -89,7 +89,7 @@ def get_price(ticker, client, endpoint='quotes/'):
         endpoint (str): path to
 
     Returns:
-        dict: todo
+        float: todo
 
     Raises:
         requests.RequestException: Unable to connect to robinhood
@@ -97,5 +97,43 @@ def get_price(ticker, client, endpoint='quotes/'):
     """
     quote = client.get(endpoint, params={'symbols': ticker})
     if quote['results'][0]['last_extended_hours_trade_price']:
-        return quote['results'][0]['last_extended_hours_trade_price']
-    return quote['results'][0]['last_trade_price']
+        return float(quote['results'][0]['last_extended_hours_trade_price'])
+    return float(quote['results'][0]['last_trade_price'])
+
+
+def get_name(ticker, client, endpoint=get_config("ROBINHOOD", "instruments_endpoint")):
+    """Fetch `simple name` of company given ticker
+
+    Args:
+        ticker (str): stock ticker
+        client (:obj:`RobinhoodConnection`): connection context
+        endpoint (str): endpoint for `instruments` and company trading metadata
+
+    Notes:
+        Only smart enough to search 1 page
+
+    Returns:
+        str: simple name of company given ticker
+
+    Raises:
+        requests.RequestException: unable to conncet to robinhood
+        TickerNotFound:
+        KeyError: unable to find requested stock ticker
+
+    """
+    ticker = ticker.upper()
+    instruments = client.get(endpoint, params={'query': ticker})
+
+    company_info = {}
+    pageno = 1
+    while not company_info:
+        logging.info('checking page: %s', pageno)
+        for record in instruments['results']:
+            if record['symbol'] == ticker:
+                company_info = record
+
+        if not instruments['next']:
+            raise exceptions.TickerNotFound
+        instruments = client.get(instruments['next'], params={'query': ticker})
+
+    return company_info['simple_name']

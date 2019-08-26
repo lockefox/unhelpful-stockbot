@@ -8,3 +8,7 @@ class RobinhoodException(UnhelpfulException):
 
 class RobinhoodNoLogin(RobinhoodException):
     """Lacking login credentials, must be called as part of the context-manager scope"""
+
+
+class TickerNotFound(RobinhoodException):
+    """Unable to find instrument/ticker for a requested company symbol"""
