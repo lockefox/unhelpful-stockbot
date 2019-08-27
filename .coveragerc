@@ -1,9 +1,0 @@
-[report]
-    omit = 
-        unhelpful/exceptions.py
-        unhelpful/slackbot_settings.py
-        .tox*
-        .venv*
-
-[paths]
-    source = unhelpful
