@@ -1,7 +1,6 @@
-"""valudate unhelpful.robinhood tools"""
+"""validate unhelpful.robinhood tools"""
 
 import pytest
-import os
 
 import requests
 
@@ -60,16 +59,25 @@ class TestGetInfo:
     """validates get_* queries and their weirdness"""
 
     def test_get_price(self, rh_client):
+        """validate get_price functionality"""
+        # No `endpoint`.  Want to validate app.cfg has correct addresses
         price = robinhood.get_price('MU', rh_client)
 
         assert price
         assert isinstance(price, float)
 
+    def test_get_price_error(self, rh_client):
+        """validate bad behavior"""
+        with pytest.raises(requests.RequestException):
+            price = robinhood.get_price('FAKE', rh_client)
+
     def test_get_name(self, rh_client):
+        """validate get_name functionality"""
         company_name = robinhood.get_name('MU', rh_client)
 
         assert company_name == 'Micron Technology'
 
     def test_get_name_failed(self, rh_client):
+        """validate bad behavior"""
         with pytest.raises(exceptions.TickerNotFound):
             company_name = robinhood.get_name('FAKE', rh_client)

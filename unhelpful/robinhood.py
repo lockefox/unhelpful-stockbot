@@ -126,11 +126,8 @@ def get_name(ticker, client, endpoint=get_config("ROBINHOOD", "instruments_endpo
 
     company_info = {}
     pageno = 1
-    print(ticker)
     while not company_info:
-        logging.info('checking page: %s', pageno)
         for record in instruments['results']:
-            print(record['symbol'])
             if record['symbol'] == ticker:
                 company_info = record
                 break
