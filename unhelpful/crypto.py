@@ -38,14 +38,11 @@ def get_coinmarketcap_list(endpoint=get_config('COINMARKETCAP', 'endpoint')):
     return req.json()
 
 
-def get_coin_quotes(
-    source=CoinSource.coinmarketcap, max_rank=get_config('COINMARKETCAP', 'top_coins')
-):
+def get_coin_quotes(source=CoinSource.coinmarketcap):
     """get collection of cryptocurrency quotes
 
     Args:
         source (:enum:`CoinSource`): name/enum of resource to query
-        max_rank (int): how many coins to pull from
 
     Returns:
         list: collection of CoinQuote named tuples
@@ -56,7 +53,7 @@ def get_coin_quotes(
     """
     quotes = []
     if CoinSource(source) == CoinSource.coinmarketcap:
-        logging.info('fetching top %s from `coinmarketcap`', max_rank)
+        logging.info('fetching quotes from `coinmarketcap`')
         data = get_coinmarketcap_list()
         for record in data:
             quotes.append(
