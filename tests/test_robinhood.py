@@ -8,6 +8,7 @@ from unhelpful import robinhood
 from unhelpful import exceptions
 
 
+@pytest.mark.rh
 def test_login(rh_secrets):
     """validate login/logout contextmanager"""
     ## Use API as expected ##
@@ -28,6 +29,7 @@ def test_login(rh_secrets):
         req.raise_for_status()
 
 
+@pytest.mark.rh
 def test_get_error(rh_secrets):
     """validate handler blows up if not in a `with` context"""
     with pytest.raises(exceptions.RobinhoodNoLogin):
@@ -55,6 +57,7 @@ def rh_client(rh_secrets):
         yield client
 
 
+@pytest.mark.rh
 class TestGetInfo:
     """validates get_* queries and their weirdness"""
 
