@@ -4,11 +4,14 @@ import datetime
 import enum
 import logging
 import random
+import os
 
 import requests
 
 from . import exceptions
 from .utilities import get_config
+
+c_random = random.Random(os.environ.get('PYTHONHASHSEED'))
 
 
 class CoinSource(enum.Enum):
@@ -67,3 +70,27 @@ def get_coin_quotes(source=CoinSource.coinmarketcap):
             )
 
         return quotes
+
+
+def get_random_quote(quote_list, max_range=int(get_config('COINMARKETCAP', 'top_coins'))):
+    """pick a random cryptocoin to use in actual result
+
+    Args:
+        quote_list (list): List of CoinQuote
+        max_range (int): maximum for random.randint()
+
+    Returns:
+        CoinQuote: single CoinQuote picked randomly
+
+    """
+    if max_range > len(quote_list):
+        logging.warning(
+            '`max_range` exceeds actual quote length, using list length: %s', len(quote_list)
+        )
+        max_range = len(quote_list)
+
+    if not max_range:
+        logging.warning('`max_range` missing, using full list length: %s', len(quote_list))
+        max_range = len(quote_list)
+
+    return quote_list[c_random.randint(0, max_range)]
