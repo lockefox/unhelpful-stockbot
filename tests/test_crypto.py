@@ -31,9 +31,13 @@ def test_get_coinmarketcap_list():
 
 @pytest.mark.crypto
 class TestGetCoinQuotes:
+<<<<<<< HEAD
     """validate quote fetching tools
     TODO: parameterize
     """
+=======
+    """validate quote fetching tools"""
+>>>>>>> eed48881a7037d3fa5c6b55e4c7dbba0620dd2e2
 
     def test_coin_quotes_default(self, caplog):
         with caplog.at_level(logging.INFO, logger=''):
@@ -54,7 +58,6 @@ class TestGetCoinQuotes:
 
         bitcoin_quote = [quote for quote in quotes if quote.symbol == 'BTC'][0]
         assert bitcoin_quote.name == 'Bitcoin'
-
 
 @pytest.mark.crypto
 class TestRandomQuote:
