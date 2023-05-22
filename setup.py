@@ -25,6 +25,6 @@ setup(
     keywords='slack bot stock fintech chatbot',
     packages=find_packages(),
     package_data={'': ['LICENSE', 'README.md', 'VERSION'], 'unhelpful': ['app.cfg']},
-    install_requires=['slackbot==0.5.3', 'requests==2.22.0'],
+    install_requires=['slackbot==0.5.3', 'requests==2.31.0'],
     entry_points={'console_scripts': ['launch-unhelpful=unhelpful.bot:run']},
 )
